@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Echarts test</title>
+</head>
+<body>
+<div id="tpContainer" style="overflow: hidden;"></div>
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+</body>
+
+</html>
+<div id="main" style="width:1500px;height:500px;"></div>
+<script>
+//添加Echarts拓扑方法
+	  var myChart = echarts.init(document.getElementById('main'));
+      
+      myChart.showLoading();
+      $.get('/产品.json', function (data) {
+        myChart.hideLoading();
+
+        //echarts.util.each(data.children, function (datum, index) {
+        //    index % 2 === 0 && (datum.collapsed = true);
+        //});
+
+        myChart.setOption(option = {
+          tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove'
+          },
+		  animationDurationUpdate: 1500,
+		  animationEasingUpdate: 'quinticInOut',
+          series: [
+            {
+              type: 'graph',
+			  layout: 'force',
+              symbolSize: 45,
+              focusNodeAdjacency: true,
+              roam: true,
+              label: {
+                  normal: {
+                      show: true,
+                      textStyle: {
+                        fontSize: 12
+                    },
+                }
+            },
+              force: {
+                  repulsion: 1000
+            },
+            edgeSymbolSize: [4, 50],
+            edgeLabel: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 10
+                    },
+                    formatter: "{c}"
+                }
+            },
+
+              data: data.data,
+			  links:data.links,
+			  
+              lineStyle: {
+                normal: {
+                    opacity: 0.9,
+                    width: 1,
+                    curveness: 0
+                }
+            }
+            }
+          ]
+        });
+        myChart.on('click', function (params) {
+         window.open('http://127.0.0.1:8086/' + encodeURIComponent(params.name) + '.html');
+		 //window.open('http://localhost:8080/BiologyKG?inpage=1&mention=' + encodeURIComponent(params.name));
+        });
+      });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
